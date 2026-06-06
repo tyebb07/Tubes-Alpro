@@ -29,6 +29,7 @@ type arrPasien [NMAX]Pasien
 type arrLayanan [NMAX]Layanan
 type arrTransaksi [NMAX]Transaksi
 
+// pencarian
 func cariPasien(P arrPasien, nP int, idCari string) int {
 	var idx, i int
 	idx = -1
@@ -53,7 +54,7 @@ func cariLayanan(L arrLayanan, nL int, idCari string) int {
 	return idx
 }
 
-// sequential search pakai Nama
+// sequential search pake nama
 func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
 	var idx, i int
 	idx = -1
@@ -66,7 +67,7 @@ func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
 	return idx
 }
 
-// binary search berdasarkan ID 
+// binary search pake ID 
 func cariPasienByID(P arrPasien, nP int, idCari string) int {
 	var kiri, kanan, idx, tengah int
 
@@ -88,37 +89,7 @@ func cariPasienByID(P arrPasien, nP int, idCari string) int {
 	return idx
 }
 
-func menuPasien(P *arrPasien, nP *int) {
-	var pilih int
-	pilih = -1
-
-	for pilih != 0 {
-		fmt.Println("\n==== MENU KELOLA PASIEN ====")
-		fmt.Println("1.Tambah pasien")
-		fmt.Println("2.Tampilkan pasien")
-		fmt.Println("3.Ubah pasien")
-		fmt.Println("4.Hapus pasien")
-		fmt.Println("5.Cari pasien")
-		fmt.Println("0.Kembali ke menu utama")
-		fmt.Print("Pilih : ")
-		fmt.Scan(&pilih)
-
-		if pilih == 1 {
-			tambahPasien(P, nP)
-		} else if pilih == 2 {
-			tampilkanPasien(*P, *nP)
-		} else if pilih == 3 {
-			ubahPasien(P, *nP)
-		} else if pilih == 4 {
-			hapusPasien(P, nP)
-		} else if pilih == 5 {
-			menuCariPasien(*P, *nP)
-		} else if pilih != 0 {
-			fmt.Println("Pilihan tidak valid!")
-		}
-	}
-}
-
+// pasien
 func tambahPasien(P *arrPasien, nP *int) {
 	if *nP < NMAX {
 		fmt.Println("\n--- Tambah Pasien ---")
@@ -234,7 +205,7 @@ func menuCariPasien(P arrPasien, nP int) {
 
 	if pilih == 1 || pilih == 2 {
 		if idx != -1 {
-			fmt.Println("\nData ditemukan!")
+			fmt.Println("\nData ditemukan")
 			fmt.Println("ID Pasien :", P[idx].idPasien)
 			fmt.Println("Nama      :", P[idx].nama)
 			fmt.Println("Umur      :", P[idx].umur)
@@ -244,28 +215,7 @@ func menuCariPasien(P arrPasien, nP int) {
 	}
 }
 
-func menuLayanan(L *arrLayanan, nL *int) {
-	var pilih int
-	pilih = -1
-
-	for pilih != 0 {
-		fmt.Println("\n=== MENU KELOLA LAYANAN ===")
-		fmt.Println("1.Tambah layanan")
-		fmt.Println("2.Tampilkan layanan")
-		fmt.Println("0.Kembali ke menu utama")
-		fmt.Print("Pilih: ")
-		fmt.Scan(&pilih)
-
-		if pilih == 1 {
-			tambahLayanan(L, nL)
-		} else if pilih == 2 {
-			tampilkanLayanan(*L, *nL)
-		} else if pilih != 0 {
-			fmt.Println("Pilihan tidak valid")
-		}
-	}
-}
-
+// layanan
 func tambahLayanan(L *arrLayanan, nL *int) {
 	if *nL < NMAX {
 		fmt.Println("\n--- Tambah Layanan ---")
@@ -301,36 +251,7 @@ func tampilkanLayanan(L arrLayanan, nL int) {
 	}
 }
 
-func menuTransaksi(T *arrTransaksi, nT *int, P arrPasien, nP int, L arrLayanan, nL int) {
-	var pilih int
-	pilih = -1
-
-	for pilih != 0 {
-		fmt.Println("\n=== MENU TRANSAKSI & SORTING ===")
-		fmt.Println("1. Catat kunjungan baru")
-		fmt.Println("2. Tampilkan riwayat transaksi")
-		fmt.Println("3. Urutkan transaksi dari biaya")
-		fmt.Println("4. Urutkan transaksi dari tanggal")
-		fmt.Println("0. Kembali ke Menu Utama")
-		fmt.Print("Pilih: ")
-		fmt.Scan(&pilih)
-
-		if pilih == 1 {
-			tambahKunjungan(T, nT, P, nP, L, nL)
-		} else if pilih == 2 {
-			tampilkanTransaksi(*T, *nT)
-		} else if pilih == 3 {
-			urutkanTransaksiBiayaDesc(T, *nT)
-			tampilkanTransaksi(*T, *nT)
-		} else if pilih == 4 {
-			urutkanTransaksiTanggalAsc(T, *nT)
-			tampilkanTransaksi(*T, *nT)
-		} else if pilih != 0 {
-			fmt.Println("Pilihan tidak valid!")
-		}
-	}
-}
-
+// transaksi sama sorting
 func tambahKunjungan(T *arrTransaksi, nT *int, P arrPasien, nP int, L arrLayanan, nL int) {
 	var idTrans, tgl, idPasien, idLay string
 	var idxPasien, idxLay int
@@ -388,7 +309,7 @@ func tampilkanTransaksi(T arrTransaksi, nT int) {
 	fmt.Println("\n--- Riwayat Transaksi ---")
 
 	if nT == 0 {
-		fmt.Println("Belum ada riwayat transaksi.")
+		fmt.Println("Belum ada riwayat transaksi")
 	} else {
 		for i = 0; i < nT; i++ {
 			fmt.Println("----------------------------")
@@ -414,7 +335,7 @@ func urutkanTransaksiBiayaDesc(T *arrTransaksi, nT int) {
 		T[i] = T[max]
 		T[max] = temp
 	}
-	fmt.Println(">> Data berhasil diurutkan berdasarkan biaya secara aescending")
+	fmt.Println(">> Data berhasil diurutkan berdasarkan biaya secara descending")
 }
 
 // insertion sort
@@ -436,6 +357,7 @@ func urutkanTransaksiTanggalAsc(T *arrTransaksi, nT int) {
 	fmt.Println(">> Data berhasil diurutkan berdasarkan tanggal secara ascending")
 }
 
+// statistik
 func statistik(T arrTransaksi, nT int, L arrLayanan, nL int) {
 	var tglCari string
 	var i, j, max, idxMax, count, idxL int
@@ -478,12 +400,21 @@ func statistik(T arrTransaksi, nT int, L arrLayanan, nL int) {
 	}
 }
 
+// menu utama
 func menuUtama() {
 	fmt.Println("\n===== SIM-KLIK MENU UTAMA =====")
-	fmt.Println("1. Kelola pasien")
-	fmt.Println("2. Kelola layanan")
-	fmt.Println("3. Transaksi & Pengurutan")
-	fmt.Println("4. Statistik klinik")
+	fmt.Println("1. Tambah pasien")
+	fmt.Println("2. Tampilkan pasien")
+	fmt.Println("3. Ubah pasien")
+	fmt.Println("4. Hapus pasien")
+	fmt.Println("5. Cari pasien")
+	fmt.Println("6. Tambah layanan")
+	fmt.Println("7. Tampilkan layanan")
+	fmt.Println("8. Catat kunjungan")
+	fmt.Println("9. Tampilkan riwayat transaksi")
+	fmt.Println("10. Urutkan transaksi dari biaya")
+	fmt.Println("11. Urutkan transaksi dari tanggal")
+	fmt.Println("12. Statistik klinik")
 	fmt.Println("0. Keluar")
 	fmt.Print("Pilih menu: ")
 }
@@ -505,17 +436,35 @@ func main() {
 		fmt.Scan(&pilih)
 
 		if pilih == 1 {
-			menuPasien(&P, &nP)
+			tambahPasien(&P, &nP)
 		} else if pilih == 2 {
-			menuLayanan(&L, &nL)
+			tampilkanPasien(P, nP)
 		} else if pilih == 3 {
-			menuTransaksi(&T, &nT, P, nP, L, nL)
+			ubahPasien(&P, nP)
 		} else if pilih == 4 {
+			hapusPasien(&P, &nP)
+		} else if pilih == 5 {
+			menuCariPasien(P, nP)
+		} else if pilih == 6 {
+			tambahLayanan(&L, &nL)
+		} else if pilih == 7 {
+			tampilkanLayanan(L, nL)
+		} else if pilih == 8 {
+			tambahKunjungan(&T, &nT, P, nP, L, nL)
+		} else if pilih == 9 {
+			tampilkanTransaksi(T, nT)
+		} else if pilih == 10 {
+			urutkanTransaksiBiayaDesc(&T, nT)
+			tampilkanTransaksi(T, nT)
+		} else if pilih == 11 {
+			urutkanTransaksiTanggalAsc(&T, nT)
+			tampilkanTransaksi(T, nT)
+		} else if pilih == 12 {
 			statistik(T, nT, L, nL)
 		} else if pilih == 0 {
-			fmt.Println("Terima kasih sudah menggunakan SIM-KLIK")
+			fmt.Println("====== Terima kasih sudah menggunakan SIM-KLIK ======")
 		} else {
-			fmt.Println("Menu tidak  valid")
+			fmt.Println("Menu tidak valid")
 		}
 	}
 }
