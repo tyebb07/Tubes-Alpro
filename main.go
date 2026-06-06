@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-const NMAX = 999
+const NMAX = 99
 
 type Layanan struct {
 	idLayanan   string
@@ -31,6 +31,11 @@ type arrTransaksi [NMAX]Transaksi
 
 // pencarian
 func cariPasien(P arrPasien, nP int, idCari string) int {
+
+/* 	mengembalikan nilai idx sebagai indeks array yang dicari melalui idPasien 
+	menggunakan sequential search pada menu cari pasien dan akan mengembalikan 
+	nilai idx = -1 jika idPasien yang dicari tidak ditemukan */
+
 	var idx, i int
 	idx = -1
 
@@ -43,6 +48,12 @@ func cariPasien(P arrPasien, nP int, idCari string) int {
 }
 
 func cariLayanan(L arrLayanan, nL int, idCari string) int {
+
+/* 	mengembalikan nilai idx sebagai indeks array yang dicari melalui idLayanan 
+	pada menu cari layanan dan akan mengembalikan nilai idx = -1 jika idLayanan 
+	yang dicari tidak ditemukan */
+	
+
 	var idx, i int
 	idx = -1
 
@@ -56,6 +67,11 @@ func cariLayanan(L arrLayanan, nL int, idCari string) int {
 
 // sequential search pake nama
 func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
+
+/* 	mengembalikan nilai idx sebagai indeks array yang dicari melalui nama pasien 
+	pada menu cari pasien dan akan mengembalikan nilai idx = -1 jika nama pasien 
+	yang dicari tidak ditemukan */
+
 	var idx, i int
 	idx = -1
 
@@ -69,6 +85,11 @@ func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
 
 // binary search pake ID 
 func cariPasienByID(P arrPasien, nP int, idCari string) int {
+	
+/* 	mengembalikan nilai idx sebagai indeks array yang dicari melalui idPasien 
+	menggunakan binary search pada menu cari pasien dan akan mengembalikan 
+	nilai idx = -1 jika idPasien yang dicari tidak ditemukan */
+	
 	var kiri, kanan, idx, tengah int
 
 	kiri = 0
@@ -91,23 +112,45 @@ func cariPasienByID(P arrPasien, nP int, idCari string) int {
 
 // pasien
 func tambahPasien(P *arrPasien, nP *int) {
-	if *nP < NMAX {
-		fmt.Println("\n--- Tambah Pasien ---")
-		fmt.Print("Masukkan ID Pasien : ")
-		fmt.Scan(&P[*nP].idPasien)
-		fmt.Print("Masukkan Nama      : ")
-		fmt.Scan(&P[*nP].nama)
-		fmt.Print("Masukkan Umur      : ")
-		fmt.Scan(&P[*nP].umur)
+/* 	I.S. Terdefinisi array pasien P dan jumlah data nP. */
 
-		*nP++
-		fmt.Println("Data berhasil ditambahkan")
-	} else {
-		fmt.Println("Data sudah penuh, tidak bisa menambah pasien")
+/*	F.S. Jika array belum penuh, data pasien baru ditambahkan ke P, 
+	nilai nP bertambah 1, dan menampilkan pesan "Data berhasil 
+	ditambahkan". Jika array penuh, data tidak berubah dan menampilkan 
+	pesan "Data sudah penuh, tidak bisa menambah pasien". */
+	
+	var idBaru string
+
+		if *nP < NMAX {
+			fmt.Println("\n--- Tambah Pasien ---")
+			fmt.Print("Masukkan ID pasien : ")
+			fmt.Scan(&idBaru) 
+
+			if cariPasien(*P, *nP, idBaru) != -1 {
+				fmt.Println("Gagal ID pasien sudah ada.. gunakan ID lain")
+			} else {
+				P[*nP].idPasien = idBaru
+				
+				fmt.Print("Masukkan Nama      : ")
+				fmt.Scan(&P[*nP].nama)
+				fmt.Print("Masukkan Umur      : ")
+				fmt.Scan(&P[*nP].umur)
+
+				*nP++
+				fmt.Println("Data berhasil ditambahkan")
+			}
+		} else {
+			fmt.Println("Data sudah penuh, tidak bisa menambah pasien")
+		}
 	}
-}
 
-func tampilkanPasien(P arrPasien, nP int) {
+	func tampilkanPasien(P arrPasien, nP int) {
+
+/*	I.S. Terdefinisi array pasien P dan jumlah data nP. */
+
+/* 	F.S. Menampilkan data pasien jika nP > 0 atau menampilkan 
+	"Belum ada data pasien" jika nP == 0 */
+
 	var i int
 	fmt.Println("\n--- Daftar Pasien ---")
 
@@ -126,6 +169,12 @@ func tampilkanPasien(P arrPasien, nP int) {
 }
 
 func ubahPasien(P *arrPasien, nP int) {
+
+/* 	I.S. Terdefinisi array pasien P dan jumlah data nP. */
+
+/*	F.S. Jika ID pasien ditemukan, nama dan umur pasien diubah sesuai input baru.
+	Jika data kosong atau ID tidak ditemukan, data pasien tidak berubah. */
+
 	var idCari string
 	var i int
 
@@ -156,6 +205,13 @@ func ubahPasien(P *arrPasien, nP int) {
 }
 
 func hapusPasien(P *arrPasien, nP *int) {
+
+/* 	I.S. Array pasien P dan jumlah data nP terdefinisi. */
+
+/*	F.S. Jika ID pasien ditemukan, data pasien tersebut dihapus,
+    elemen setelahnya digeser ke kiri, dan nP berkurang 1.
+	Jika data kosong atau ID tidak ditemukan, data pasien tidak berubah. */
+
 	var idCari string
 	var i, idx int
 
@@ -181,8 +237,16 @@ func hapusPasien(P *arrPasien, nP *int) {
 }
 
 func menuCariPasien(P arrPasien, nP int) {
+
+/*	I.S. Terdefinisi array P dan jumlah data nP. */
+
+/*	F.S. Mencari data pasien menggunakan nama atau Id pasien,
+	dan menampilkan data pasien bila data yang dicari ditemukan
+	atau menampilkan pesan "data tidak ditemukan jika data yang 
+	dicari tidak ada" */
+
 	var pilih, idx int
-	var stringCari string
+	var cari string
 
 	fmt.Println("\n--- Menu Pencarian Pasien ---")
 	fmt.Println("1. Berdasarkan nama (Sequential Search)")
@@ -192,12 +256,12 @@ func menuCariPasien(P arrPasien, nP int) {
 
 	if pilih == 1 {
 		fmt.Print("Masukkan Nama Pasien yang dicari: ")
-		fmt.Scan(&stringCari)
-		idx = cariPasienByNama(P, nP, stringCari)
+		fmt.Scan(&cari)
+		idx = cariPasienByNama(P, nP, cari)
 	} else if pilih == 2 {
 		fmt.Print("Masukkan ID Pasien yang dicari: ")
-		fmt.Scan(&stringCari)
-		idx = cariPasienByID(P, nP, stringCari)
+		fmt.Scan(&cari)
+		idx = cariPasienByID(P, nP, cari)
 	} else {
 		fmt.Println("Pilihan tidak valid")
 		idx = -1
@@ -217,6 +281,13 @@ func menuCariPasien(P arrPasien, nP int) {
 
 // layanan
 func tambahLayanan(L *arrLayanan, nL *int) {
+
+/* 	I.S. Terdefinisi array layanan L dan jumlah data nL. */
+
+/* 	F.S. Jika array belum penuh, satu data layanan baru dapat 
+	ditambahkan ke L, nilai nL bertambah 1, dan pesan berhasil, 
+	ditampilkan. Jika array penuh, data layanan tidak berubah. */
+
 	if *nL < NMAX {
 		fmt.Println("\n--- Tambah Layanan ---")
 		fmt.Print("Masukkan ID layanan : ")
@@ -234,6 +305,12 @@ func tambahLayanan(L *arrLayanan, nL *int) {
 }
 
 func tampilkanLayanan(L arrLayanan, nL int) {
+
+/* 	I.S. Terdefinisi array layanan L dan jumlah data nL. */
+
+/* 	F.S. Seluruh data layanan ditampilkan ke layar. Jika 
+	nL = 0, ditampilkan pesan bahwa data layanan belum ada. */
+
 	var i int
 	fmt.Println("\n---- Daftar Layanan ----")
 
@@ -253,6 +330,13 @@ func tampilkanLayanan(L arrLayanan, nL int) {
 
 // transaksi sama sorting
 func tambahKunjungan(T *arrTransaksi, nT *int, P arrPasien, nP int, L arrLayanan, nL int) {
+
+/* 	I.S. Terdefinisi array transaksi T, jumlah transaksi nT, data pasien P, dan data layanan L. */
+
+/* 	F.S. Jika data transaksi belum penuh dan pasien terdaftar, satu transaksi baru dicatat ke T, 
+	layanan yang valid dimasukkan, total biaya dihitung, dan nT bertambah 1. Jika pasien tidak 
+	terdaftar atau transaksi penuh, data transaksi tidak bertambah. */
+
 	var idTrans, tgl, idPasien, idLay string
 	var idxPasien, idxLay int
 	var lanjut bool
@@ -288,9 +372,9 @@ func tambahKunjungan(T *arrTransaksi, nT *int, P arrPasien, nP int, L arrLayanan
 						T[*nT].daftarLayanan[T[*nT].jmlLayanan] = L[idxLay]
 						T[*nT].totalBiaya = T[*nT].totalBiaya + L[idxLay].harga
 						T[*nT].jmlLayanan++
-						fmt.Println("-> Layanan masuk ke nota!")
+						fmt.Println("Layanan masuk ke nota")
 					} else {
-						fmt.Println("-> ID Layanan tidak valid!")
+						fmt.Println("ID Layanan tidak valid")
 					}
 				}
 			}
@@ -305,6 +389,12 @@ func tambahKunjungan(T *arrTransaksi, nT *int, P arrPasien, nP int, L arrLayanan
 }
 
 func tampilkanTransaksi(T arrTransaksi, nT int) {
+
+/* 	I.S. Array transaksi T dan jumlah data nT terdefinisi. */
+
+/*	F.S. Seluruh riwayat transaksi ditampilkan ke layar. 
+	Jika nT = 0, ditampilkan pesan bahwa belum ada riwayat transaksi. */
+
 	var i int
 	fmt.Println("\n--- Riwayat Transaksi ---")
 
@@ -319,7 +409,37 @@ func tampilkanTransaksi(T arrTransaksi, nT int) {
 	}
 }
 
-func urutkanTransaksiBiayaDesc(T *arrTransaksi, nT int) {
+// sorting
+// selection sort
+func selectionSortBiayaAsc(T *arrTransaksi, nT int) {
+
+/* 	I.S. Terdefinisi array transaksi T dan jumlah data nT dalam kondisi acak. */
+
+/* 	F.S. Data transaksi pada T terurut menaik berdasarkan totalBiaya menggunakan selection sort. */
+
+	var i, j, min int
+	var temp Transaksi
+
+	for i = 0; i < nT-1; i++ {
+		min = i
+		for j = i + 1; j < nT; j++ {
+			if T[j].totalBiaya < T[min].totalBiaya {
+				min = j
+			}
+		}
+		temp = T[i]
+		T[i] = T[min]
+		T[min] = temp
+	}
+	fmt.Println("Data berhasil diurutkan berdasarkan biaya secara ascending")
+}
+
+func selectionSortBiayaDesc(T *arrTransaksi, nT int) {
+
+/*	I.S. Terdefinisi array transaksi T dan jumlah data nT  dalam kondisi acak. */
+
+/* 	F.S. Data transaksi pada T terurut menurun berdasarkan totalBiaya menggunakan selection sort. */
+
 	var i, j, max int
 	var temp Transaksi
 
@@ -330,16 +450,37 @@ func urutkanTransaksiBiayaDesc(T *arrTransaksi, nT int) {
 				max = j
 			}
 		}
-
 		temp = T[i]
 		T[i] = T[max]
 		T[max] = temp
 	}
-	fmt.Println(">> Data berhasil diurutkan berdasarkan biaya secara descending")
+	fmt.Println(">> Data berhasil diurutkan berdasarkan Biaya secara Descending (Selection Sort)")
+}
+
+func ubahFormatTanggal(tgl string) string {
+
+/* 	I.S. : String tgl terdefinisi dan berisi tanggal transaksi 
+	dengan format "DD-MM-YYYY" (Contoh: "24-04-2006") */
+
+/*	F.S. : Mengembalikan string baru dengan format yang sudah 
+	dipotong dan dibalik menjadi "YYYY-MM-DD" (Contoh: "2006-04-24") 
+	ini buat data tanggal dapat dibandingkan secara presisi mulai dari tahun, bulan, hingga hari */
+	
+	var tahun, bulan, hari string
+	tahun = tgl[6:10] 
+	bulan = tgl[3:5]  
+	hari = tgl[0:2]   
+	
+	return tahun + "-" + bulan + "-" + hari
 }
 
 // insertion sort
-func urutkanTransaksiTanggalAsc(T *arrTransaksi, nT int) {
+func insertionSortTanggalAsc(T *arrTransaksi, nT int) {
+
+/* 	I.S. Terdefinisi array transaksi T dan jumlah data nT dalam kondisi acak. */
+
+/* 	F.S. Data transaksi pada T terurut menaik berdasarkan tanggal menggunakan insertion sort. */
+
 	var i, j int
 	var key Transaksi
 
@@ -347,18 +488,48 @@ func urutkanTransaksiTanggalAsc(T *arrTransaksi, nT int) {
 		key = T[i]
 		j = i - 1
 
-		for j >= 0 && T[j].tanggal > key.tanggal {
+		for j >= 0 && ubahFormatTanggal(T[j].tanggal) > ubahFormatTanggal(key.tanggal) {
 			T[j+1] = T[j]
 			j--
 		}
 
 		T[j+1] = key
 	}
-	fmt.Println(">> Data berhasil diurutkan berdasarkan tanggal secara ascending")
+	fmt.Println("Data berhasil diurutkan berdasarkan Tanggal secara ascending")
+}
+
+func insertionSortTanggalDesc(T *arrTransaksi, nT int) {
+
+/* 	I.S. Terdefinisi array transaksi T dan jumlah data nT dalam kondisi acak. */
+
+/* 	F.S. Data transaksi pada T terurut menurun berdasarkan tanggal menggunakan insertion sort. */
+
+var i, j int
+	var key Transaksi
+
+	for i = 1; i < nT; i++ {
+		key = T[i]
+		j = i - 1
+
+		for j >= 0 && ubahFormatTanggal(T[j].tanggal) < ubahFormatTanggal(key.tanggal) {
+			T[j+1] = T[j]
+			j--
+		}
+
+		T[j+1] = key
+	}
+	fmt.Println(">> Data berhasil diurutkan berdasarkan Tanggal (Lengkap) secara Descending")
 }
 
 // statistik
 func statistik(T arrTransaksi, nT int, L arrLayanan, nL int) {
+
+/* 	I.S. Terdefinisi array transaksi T, jumlah transaksi nT, array layanan L,
+    dan jumlah layanan nL. */
+	
+/* 	F.S. Ditampilkan jumlah transaksi pada tanggal tertentu
+    dan layanan yang paling sering dipesan, jika ada transaksi. */
+
 	var tglCari string
 	var i, j, max, idxMax, count, idxL int
 	var arrCount [NMAX]int
@@ -412,9 +583,11 @@ func menuUtama() {
 	fmt.Println("7. Tampilkan layanan")
 	fmt.Println("8. Catat kunjungan")
 	fmt.Println("9. Tampilkan riwayat transaksi")
-	fmt.Println("10. Urutkan transaksi dari biaya")
-	fmt.Println("11. Urutkan transaksi dari tanggal")
-	fmt.Println("12. Statistik klinik")
+	fmt.Println("10. Urutkan transaksi dari biaya ascending")
+	fmt.Println("11. Urutkan transaksi dari biaya descending")
+	fmt.Println("12. Urutkan transaksi dari tanggal ascending")
+	fmt.Println("13. Urutkan transaksi dari tanggal descending")
+	fmt.Println("14. Statistik klinik")
 	fmt.Println("0. Keluar")
 	fmt.Print("Pilih menu: ")
 }
@@ -436,35 +609,41 @@ func main() {
 		fmt.Scan(&pilih)
 
 		if pilih == 1 {
-			tambahPasien(&P, &nP)
-		} else if pilih == 2 {
-			tampilkanPasien(P, nP)
-		} else if pilih == 3 {
-			ubahPasien(&P, nP)
-		} else if pilih == 4 {
-			hapusPasien(&P, &nP)
-		} else if pilih == 5 {
-			menuCariPasien(P, nP)
-		} else if pilih == 6 {
-			tambahLayanan(&L, &nL)
-		} else if pilih == 7 {
-			tampilkanLayanan(L, nL)
-		} else if pilih == 8 {
-			tambahKunjungan(&T, &nT, P, nP, L, nL)
-		} else if pilih == 9 {
-			tampilkanTransaksi(T, nT)
-		} else if pilih == 10 {
-			urutkanTransaksiBiayaDesc(&T, nT)
-			tampilkanTransaksi(T, nT)
-		} else if pilih == 11 {
-			urutkanTransaksiTanggalAsc(&T, nT)
-			tampilkanTransaksi(T, nT)
-		} else if pilih == 12 {
-			statistik(T, nT, L, nL)
-		} else if pilih == 0 {
-			fmt.Println("====== Terima kasih sudah menggunakan SIM-KLIK ======")
-		} else {
-			fmt.Println("Menu tidak valid")
-		}
+				tambahPasien(&P, &nP)
+			} else if pilih == 2 {
+				tampilkanPasien(P, nP)
+			} else if pilih == 3 {
+				ubahPasien(&P, nP)
+			} else if pilih == 4 {
+				hapusPasien(&P, &nP)
+			} else if pilih == 5 {
+				menuCariPasien(P, nP)
+			} else if pilih == 6 {
+				tambahLayanan(&L, &nL)
+			} else if pilih == 7 {
+				tampilkanLayanan(L, nL)
+			} else if pilih == 8 {
+				tambahKunjungan(&T, &nT, P, nP, L, nL)
+			} else if pilih == 9 {
+				tampilkanTransaksi(T, nT)
+			} else if pilih == 10 {
+				selectionSortBiayaAsc(&T, nT)
+				tampilkanTransaksi(T, nT)
+			} else if pilih == 11 {
+				selectionSortBiayaDesc(&T, nT)
+				tampilkanTransaksi(T, nT)
+			} else if pilih == 12 {
+				insertionSortTanggalAsc(&T, nT)
+				tampilkanTransaksi(T, nT)
+			} else if pilih == 13 {
+				insertionSortTanggalDesc(&T, nT)
+				tampilkanTransaksi(T, nT)
+			} else if pilih == 14 {
+				statistik(T, nT, L, nL)
+			} else if pilih == 0 {
+				fmt.Println("==== Terima kasih sudah menggunakan SIM-KLIK ====")
+			} else {
+				fmt.Println("Menu tidak valid")
+			}
 	}
 }
