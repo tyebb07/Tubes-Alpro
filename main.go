@@ -83,6 +83,23 @@ func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
 	return idx
 }
 
+func urutkanPasienByID(P *arrPasien, nP int) {
+	var i, j, min int
+	var temp Pasien
+
+	for i = 0; i < nP - 1;i++{
+		min = i
+		for j = i + 1 ; j < nP; j++{
+					if P[j].idPasien < P[min].idPasien {
+				min = j
+			}
+		}
+		temp = P[i]
+		P[i] = P[min]
+		P[min] = temp
+	}
+}
+
 // binary search pake ID 
 func cariPasienByID(P arrPasien, nP int, idCari string) int {
 	
@@ -142,6 +159,7 @@ func tambahPasien(P *arrPasien, nP *int) {
 		} else {
 			fmt.Println("Data sudah penuh, tidak bisa menambah pasien")
 		}
+			urutkanPasienByID(P, *nP)
 	}
 
 	func tampilkanPasien(P arrPasien, nP int) {
@@ -454,7 +472,7 @@ func selectionSortBiayaDesc(T *arrTransaksi, nT int) {
 		T[i] = T[max]
 		T[max] = temp
 	}
-	fmt.Println(">> Data berhasil diurutkan berdasarkan Biaya secara Descending (Selection Sort)")
+	fmt.Println("Data berhasil diurutkan berdasarkan Biaya secara Descending")
 }
 
 func ubahFormatTanggal(tgl string) string {
@@ -518,7 +536,7 @@ var i, j int
 
 		T[j+1] = key
 	}
-	fmt.Println(">> Data berhasil diurutkan berdasarkan Tanggal (Lengkap) secara Descending")
+	fmt.Println("Data berhasil diurutkan berdasarkan Tanggal (Lengkap) secara Descending")
 }
 
 // statistik
