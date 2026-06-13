@@ -84,6 +84,9 @@ func cariPasienByNama(P arrPasien, nP int, namaCari string) int {
 }
 
 func urutkanPasienByID(P *arrPasien, nP int) {
+	/* I.S Terdefinisi array pasien P dan jumlah data nP dalam kondisi acak */
+	/* F.S Data pasien pada P terurut menaik (ASC) berdasarkan idPasien menggunakan 
+	selection sort agar siap dicari dengan binary search */
 	var i, j, min int
 	var temp Pasien
 
